@@ -1,2 +1,2 @@
 # project-nvln-dev-sltn-cloud
-Este proyecto se crea para crear un servicio que permita gestionar una lista de tareas
+Este proyecto se crea para desarrollar un servicio que permita gestionar una lista de tareas
