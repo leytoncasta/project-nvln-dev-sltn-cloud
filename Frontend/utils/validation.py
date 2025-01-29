@@ -4,7 +4,7 @@ class Validation():
     def __init__(slef) -> None:
         pass
 
-    def validate_email(email):
+    def validate_email(self, email):
         pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         return re.match(pattern, email)
     

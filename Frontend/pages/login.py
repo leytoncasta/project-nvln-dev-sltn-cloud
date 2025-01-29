@@ -6,12 +6,12 @@ class Login(ft.Container):
 
         self.expand = True
 
-        self.email = ft.Container(content=ft.TextField(label="Email"))
+        self.email = ft.Container(content=ft.TextField(label="Email", color="black"))
 
         self.password = ft.Container(content=ft.TextField(
             label="Password", 
             password=True, 
-            can_reveal_password=True))
+            can_reveal_password=True, color="black"))
 
         self.content = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
