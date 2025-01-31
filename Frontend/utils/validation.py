@@ -8,7 +8,7 @@ class Validation():
         pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         return re.match(pattern, email)
     
-    def is_vaid_password(password):
+    def validate_password(slef, password):
         if len(password) < 8:
             return False
         

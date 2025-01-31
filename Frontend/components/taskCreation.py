@@ -1,57 +1,13 @@
 import flet as ft
-import components.taskCreation as tc
 
-class Home(ft.Container):
-    def __init__(self, page: ft.Page):
+class TaskCreation(ft.Container):
+    def __init__(self):
         super().__init__()
 
-        self.bgcolor = "black"
-        self.expand = True
+        self.padding=ft.padding.symmetric(horizontal=30, vertical=1)
         self.description = ft.TextField(hint_text="Description", color="white", text_size=12, content_padding=ft.padding.only(left=0))
 
         self.content = ft.Column(
-            controls=[
-                ft.Container(
-                    alignment=ft.alignment.top_left,
-                    bgcolor="black",
-                    padding=ft.padding.symmetric(horizontal=30, vertical=5),
-                    content=ft.Text("Today", color="white", size=40, weight=ft.FontWeight.BOLD),
-                ),
-                ft.Container(
-                    alignment=ft.alignment.center_left,
-                    padding=ft.padding.symmetric(horizontal=30, vertical=5),
-                    content=ft.Button(
-                        content=ft.Text("+ Add Task", color="white", size=15),
-                        style=ft.ButtonStyle(
-                            padding=ft.Padding(20, 10, 20, 10),
-                            side=ft.BorderSide(color="red", width=2),
-                            alignment=ft.alignment.center_left,
-                            bgcolor="red",
-                            color="white"
-                        ),
-                        on_click=self.remove_button
-                    ),
-                ),
-                ft.Container(
-                    ft.Divider(color="white", height=1, thickness=1),
-                    padding=ft.padding.symmetric(horizontal=30, vertical=5)
-                ),
-
-                #-----------------------------------------
-                
-                #-----------------------------------------
-            ]
-        )
-    
-    def remove_button(self, e):
-        # Remove the button container from the controls list
-        self.content.controls.pop(1)
-        self.content.controls.append(self.task_creation())
-        # Update the UI
-        self.update()
-    
-    def task_creation(self):
-        ft.Column(
             controls = [
                 ft.Text("New Task", color="white", size=15, weight=ft.FontWeight.BOLD),
                 self.description,
@@ -106,4 +62,3 @@ class Home(ft.Container):
                 )
             ]
         )
-        

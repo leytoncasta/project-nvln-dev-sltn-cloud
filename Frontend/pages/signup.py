@@ -5,7 +5,8 @@ import time
 class SignUp(ft.Container):
     def __init__(self, page: ft.Page):
         super().__init__()
-
+        
+        self.bgcolor = "white"
         self.expand = True
         self.validation = Validation()
         self.error_border = ft.border.all(color="red", width=1)
@@ -78,11 +79,23 @@ class SignUp(ft.Container):
                 self.error_field.size = 12
                 self.error_field.update()
                 self.email.update()
-                time.sleep(1)
+                time.sleep(2)
                 self.email.border = ft.border.all(color="red", width=1)
                 self.error_field.size = 0
                 self.error_field.update()
                 self.email.update()
+
+            if not self.validation.validate_password(password):
+                self.password.border = self.error_border
+                self.error_field.value = "Invalid Password"
+                self.error_field.size = 12
+                self.error_field.update()
+                self.password.update()
+                time.sleep(2)
+                self.password.border = ft.border.all(color="red", width=1)
+                self.error_field.size = 0
+                self.error_field.update()
+                self.password.update()
 
         else:
             self.error_field.value = "All fields are required"

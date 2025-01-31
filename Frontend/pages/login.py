@@ -3,7 +3,7 @@ import flet as ft
 class Login(ft.Container):
     def __init__(self, page: ft.Page):
         super().__init__()
-
+        self.bgcolor = "white"
         self.expand = True
 
         self.email = ft.Container(content=ft.TextField(label="Email", color="black"))
