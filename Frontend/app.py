@@ -22,4 +22,4 @@ def main(page: ft.Page):
 
     page.go("/login")
 
-ft.app(target=main)
+ft.app(target=main, view=None, port=5000, host="0.0.0.0")
