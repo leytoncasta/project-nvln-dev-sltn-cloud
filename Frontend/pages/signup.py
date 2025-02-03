@@ -1,6 +1,7 @@
 import flet as ft
+import asyncio
+import requests
 from utils.validation import Validation
-import time
 
 class SignUp(ft.Container):
     def __init__(self, page: ft.Page):
@@ -61,9 +62,9 @@ class SignUp(ft.Container):
                         ]
                     )
                 )
-
             ]
         )
+
     def signup(self, e):
         print("this is our signup")
         name = self.name.content.value
@@ -72,35 +73,67 @@ class SignUp(ft.Container):
         password = self.password.content.value
         confirm_password = self.confirm_password.content.value
 
-        if name and last_name and email and password and confirm_password:
-            if not self.validation.validate_email(email):
-                self.email.border = self.error_border
-                self.error_field.value = "Invalid email"
-                self.error_field.size = 12
-                self.error_field.update()
-                self.email.update()
-                time.sleep(2)
-                self.email.border = ft.border.all(color="red", width=1)
-                self.error_field.size = 0
-                self.error_field.update()
-                self.email.update()
+        if not all([name, last_name, email, password, confirm_password]):
+            self.show_error("All fields are required")
+            return
 
-            if not self.validation.validate_password(password):
-                self.password.border = self.error_border
-                self.error_field.value = "Invalid Password"
-                self.error_field.size = 12
-                self.error_field.update()
-                self.password.update()
-                time.sleep(2)
-                self.password.border = ft.border.all(color="red", width=1)
-                self.error_field.size = 0
-                self.error_field.update()
-                self.password.update()
+        if not self.validation.validate_email(email):
+            self.show_error("Invalid email", self.email)
+            return
 
-        else:
-            self.error_field.value = "All fields are required"
-            self.error_field.size=12
-            self.error_field.update()
-            time.sleep(1)
-            self.error_field.size = 0
-            self.error_field.update()
+        if not self.validation.validate_password(password):
+            self.show_error("Invalid Password", self.password)
+            return
+
+        if password != confirm_password:
+            self.show_error("Passwords do not match", self.confirm_password)
+            return
+
+        # Prepare the data to send
+        signup_data = {
+            "user_name": name,
+            "last_name": last_name,
+            "email": email,
+            "contrasenia": password,
+            "imagen_perfil": "default.jpg"
+        }
+
+        # Send a POST request to the FastAPI backend
+        try:
+            response = requests.post("http://localhost:8000/usuarios", json=signup_data)
+            if response.status_code == 200:
+                self.show_error("Signup successful!", color="green")
+                self.page.go("/login")
+            else:
+                self.show_error(f"Signup failed: {response.json().get('detail', 'Unknown error')}")
+        except requests.exceptions.RequestException as e:
+            self.show_error(f"An error occurred: {str(e)}")
+
+
+    def show_error(self, message, field=None, color="red"):
+        self.error_field.value = message
+        self.error_field.color = color
+        self.error_field.size = 12
+        if field:
+            field.border = self.error_border
+            field.update()
+        self.error_field.update()
+        self.page.update()
+
+        # Reset error message and border after 2 seconds
+        if field:
+            self.page.run_task(self.reset_field, field)
+        self.page.run_task(self.reset_error)
+
+    async def reset_field(self, field):
+        await asyncio.sleep(2)
+        field.border = None
+        field.update()
+
+    async def reset_error(self):
+        await asyncio.sleep(2)
+        self.error_field.size = 0
+        self.error_field.value = ""
+        self.error_field.update()
+
+# Note: Ensure that your Validation class is correctly implemented for email and password validation.
