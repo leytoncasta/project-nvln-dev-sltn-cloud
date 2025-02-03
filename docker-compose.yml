@@ -3,15 +3,25 @@ services:
     build: ./db
     ports:
       - "5432:5432"
+    networks:
+      - my_network
   web:
     build: ./Frontend
     ports:
-      - "5000:5000"
+      - "60236:60236"
     depends_on:
       - api
+    networks:
+      - my_network
   api:
     build: ./Backend
     ports:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - my_network
+    
+networks:
+  my_network:
+    driver: bridge

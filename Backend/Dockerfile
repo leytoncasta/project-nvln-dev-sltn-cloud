@@ -1,10 +1,10 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Install PostgreSQL development tools
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
     gcc \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
